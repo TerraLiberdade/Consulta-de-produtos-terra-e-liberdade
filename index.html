@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooperativa Terra Liberdade</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            background-color: #f0f0f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 50px 40px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+
+        .login-box h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 40px;
+        }
+
+        .login-box button {
+            width: 95%;
+            padding: 15px;
+            margin: 20px 0;
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-box button:hover {
+            background-color: #c2185b;
+        }
+
+        .quote {
+            color: #555;
+            font-size: 18px;
+            font-style: italic;
+            margin-top: 30px;
+            line-height: 1.6;
+        }
+
+        .quote span {
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <h1>Cooperativa Terra Liberdade</h1>
+            <button onclick="entrar()">Entrar</button>
+
+            <p class="quote" id="quote"></p>
+        </div>
+    </div>
+
+    <script>
+        // Frases de vários comunistas
+        const quotes = [
+            "A história de toda a sociedade até agora é a história das lutas de classes. – <span>Karl Marx</span>",
+            "Os trabalhadores não têm pátria. – <span>Karl Marx</span>",
+            "Trabalhadores do mundo, uni-vos! – <span>Karl Marx</span>",
+            "Cada um segundo suas capacidades, a cada um segundo suas necessidades. – <span>Karl Marx</span>",
+            "A luta de classes é o motor da história. – <span>Karl Marx</span>",
+            "A emancipação dos trabalhadores será a obra dos próprios trabalhadores. – <span>Karl Marx</span>",
+            "A religião é o ópio do povo. – <span>Karl Marx</span>",
+            "A produção das idéias, das concepções, das representações, é diretamente interligada com o processo material da vida. – <span>Karl Marx</span>",
+            "Não é a consciência do homem que determina o seu ser, mas, ao contrário, o ser social que determina sua consciência. – <span>Karl Marx</span>",
+            "O proletariado só pode conquistar sua liberdade lutando pela sua própria emancipação e pela emancipação de toda a humanidade. – <span>Karl Marx</span>",
+            "Os filósofos apenas interpretaram o mundo de diversas maneiras; o que importa agora é transformá-lo. – <span>Karl Marx</span>",
+            "A revolução não é uma maçã que cai quando amadurece. Você tem que fazê-la cair. – <span>Che Guevara</span>",
+            "A revolução é feita pelo povo e não por qualquer líder. – <span>Fidel Castro</span>",
+            "O poder político nasce do fuzil. – <span>Mao Tsé-Tung</span>",
+            "A guerra popular é a única forma de guerra que pode ser vencida pela classe operária. – <span>Mao Tsé-Tung</span>",
+            "A luta de classes é a principal força motriz da história. – <span>Vladimir Lenin</span>",
+            "Sem teoria revolucionária não pode haver movimento revolucionário. – <span>Vladimir Lenin</span>",
+            "O capitalismo não é um sistema universal, ele é um sistema transitório que tende a desaparecer. – <span>Rosa Luxemburgo</span>",
+            "O capitalismo cria seus próprios coveiros. – <span>Vladimir Lenin</span>",
+            "A educação é um direito de todos, mas o aprendizado de uma classe social, a classe operária, é a verdadeira emancipação. – <span>Antonio Gramsci</span>",
+            "As massas não têm outra força a não ser a força das armas e a sua consciência revolucionária. – <span>José Carlos Mariátegui</span>"
+        ];
+
+        // Exibe uma frase aleatória
+        document.getElementById('quote').innerHTML = quotes[Math.floor(Math.random() * quotes.length)];
+
+        // Função para o botão "Entrar" - redireciona para "produtos.html"
+        function entrar() {
+            window.location.href = "produtos.html"; // Redireciona para produtos.html
+        }
+    </script>
+</body>
+</html>

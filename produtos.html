@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooperativa Terra Liberdade</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #B52A31;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .date-filter {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .date-filter label {
+            font-size: 18px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .date-filter select {
+            padding: 12px 15px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: 2px solid #ddd;
+            background-color: #fff;
+            width: 200px;
+            cursor: pointer;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .product-box {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 180px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .product-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-info {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #555;
+            word-wrap: break-word; /* Quebra palavras longas */
+        }
+
+        .quote {
+            margin-top: 40px;
+            font-size: 18px;
+            font-style: italic;
+            color: #B52A31;
+            text-align: center;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                font-size: 20px;
+                padding: 15px;
+            }
+
+            .date-filter {
+                flex-direction: column;
+            }
+
+            .date-filter select {
+                width: 100%;
+            }
+
+            .product-box {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cooperativa Terra Liberdade</h1>
+    </header>
+
+    <div class="content">
+        <div class="date-filter">
+            <label for="date-filter">Filtrar por data:</label>
+            <select id="date-filter">
+                <!-- As datas serão inseridas aqui dinamicamente -->
+            </select>
+        </div>
+
+        <div class="products" id="products-list">
+            <!-- Produtos carregados da planilha serão exibidos aqui -->
+        </div>
+
+        <div class="quote" id="quote">
+            <!-- Citação exibida aqui -->
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = "AIzaSyDCwBOQW06HF15QPfBRFv_sYnAfx1rS-f0";  // Substitua pela sua chave de API
+        const SPREADSHEET_ID = "1hE1mUIM334RDFwjj9x6UaAw2nMy0gXm97VFIvBZ_t5s";  // Substitua pelo seu ID da planilha
+        const RANGE_NAME = "A:C";  // Defina o intervalo de dados
+
+        const quotes = [
+            "A história de toda a sociedade até agora é a história das lutas de classes. – Karl Marx",
+            "Os trabalhadores não têm pátria. – Karl Marx",
+            "A opressão dos trabalhadores é o fundamento do poder político, econômico e social da classe dominante. – Friedrich Engels",
+            "Cada um segundo suas capacidades, a cada um segundo suas necessidades. – Karl Marx",
+            "O capitalismo carrega em si a semente de sua própria destruição. – Karl Marx",
+            "A emancipação dos trabalhadores será obra dos próprios trabalhadores. – Karl Marx",
+            "Em cada revolução, a classe oprimida se torna a classe dominante. – Friedrich Engels",
+            "O proletariado não tem nada a perder, a não ser as suas correntes. Tem o mundo a ganhar. – Karl Marx"
+        ];
+
+        // Função para pegar os dados da planilha
+        async function fetchGoogleSheetData() {
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE_NAME}?key=${API_KEY}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            return data.values;
+        }
+
+        // Função para exibir os produtos
+        function displayProducts(products, selectedDate) {
+            const productsList = document.getElementById("products-list");
+            productsList.innerHTML = "";
+
+            // Filtra os produtos conforme a data selecionada
+            const filteredProducts = products.filter(product => {
+                const productDate = product[2]; // Data na terceira coluna
+                return productDate === selectedDate;
+            });
+
+            filteredProducts.forEach(product => {
+                const productBox = document.createElement("div");
+                productBox.classList.add("product-box");
+                
+                const productInfo = `
+                    <div class="product-info">
+                        <strong>Nome:</strong> ${product[0]}<br>
+                        <strong>Quantidade:</strong> ${product[1]}<br>
+                        <strong>Data:</strong> ${product[2]}
+                    </div>
+                `;
+                productBox.innerHTML = productInfo;
+                productsList.appendChild(productBox);
+            });
+        }
+
+        // Função para exibir as datas disponíveis no filtro
+        function updateDateFilter(dates) {
+            const filter = document.getElementById("date-filter");
+
+            // Adiciona as datas únicas ao filtro
+            const uniqueDates = [...new Set(dates)];
+
+            uniqueDates.forEach(date => {
+                const option = document.createElement("option");
+                option.value = date;
+                option.textContent = date;
+                filter.appendChild(option);
+            });
+
+            // Define o filtro para a data atual
+            const today = new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
+            filter.value = today; // Define o valor do filtro para a data atual
+
+            // Exibe os produtos para o dia atual
+            displayProducts(dates, today);
+        }
+
+        // Função para selecionar uma citação aleatória
+        function displayQuote() {
+            const quoteElement = document.getElementById("quote");
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            quoteElement.textContent = quotes[randomIndex];
+        }
+
+        // Função principal para carregar os dados da planilha e exibir
+        async function loadData() {
+            const data = await fetchGoogleSheetData();
+            const products = data.slice(1); // Pula o cabeçalho
+
+            // Coleta todas as datas para atualizar o filtro
+            const dates = products.map(product => product[2]);
+            updateDateFilter(dates);
+
+            // Exibe a citação
+            displayQuote();
+        }
+
+        // Função para tratar a mudança no filtro de data
+        document.getElementById("date-filter").addEventListener("change", function(e) {
+            const selectedDate = e.target.value;
+            fetchGoogleSheetData().then(data => {
+                const products = data.slice(1); // Pula o cabeçalho
+                displayProducts(products, selectedDate); // Exibe os produtos filtrados
+            });
+        });
+
+        // Carregar os dados na inicialização
+        loadData();
+    </script>
+</body>
+</html>
